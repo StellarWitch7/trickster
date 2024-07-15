@@ -4,6 +4,7 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.effects.ModEffects;
+import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.recipe.ModRecipes;
@@ -41,6 +42,7 @@ public class Trickster implements ModInitializer {
 		ModBlocks.register();
 		ModComponents.register();
 		ModItems.register();
+		ModEntities.register();
 		ModEffects.register();
 		ModScreenHandlers.register();
 		ModNetworking.register();

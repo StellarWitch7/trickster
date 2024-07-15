@@ -1,17 +1,14 @@
 package dev.enjarai.trickster.spell.tricks.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.entity.projectile.ItemProjectileEntity;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.tricks.entity.query.AbstractLivingEntityQueryTrick;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.ItemEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddVelocityTrick extends AbstractLivingEntityQueryTrick {
@@ -26,6 +23,9 @@ public class AddVelocityTrick extends AbstractLivingEntityQueryTrick {
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
 
         fragments = tryWard(ctx, target, fragments);
+
+        if (target instanceof ItemEntity itemEntity)
+            target = new ItemProjectileEntity(itemEntity, ctx.getWorld());
 
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
         var length = velocity.vector().length();

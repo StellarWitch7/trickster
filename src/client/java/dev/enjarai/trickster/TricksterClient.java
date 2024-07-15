@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.net.IsEditingScrollPacket;
 import dev.enjarai.trickster.net.ModClientNetworking;
@@ -9,6 +10,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
+import dev.enjarai.trickster.render.entity.ItemProjectileEntityRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
@@ -17,9 +19,12 @@ import io.wispforest.owo.ui.parsing.UIParsing;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.EntityRenderers;
 
 public class TricksterClient implements ClientModInitializer {
 	@Override
@@ -32,6 +37,7 @@ public class TricksterClient implements ClientModInitializer {
 		ModKeyBindings.register();
 		ModClientNetworking.register();
 
+		EntityRendererRegistry.register(ModEntities.ITEM_PROJECTILE_ENTITY_TYPE, ItemProjectileEntityRenderer::new);
 		BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
 
 		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
