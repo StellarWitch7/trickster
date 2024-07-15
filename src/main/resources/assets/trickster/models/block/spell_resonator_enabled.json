@@ -4,7 +4,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "trickster:block/spell_resonator_crystal",
-		"1": "trickster:block/spell_resonator_base",
+		"1": "trickster:block/spell_resonator_base_enabled",
 		"particle": "trickster:block/spell_resonator_crystal"
 	},
 	"elements": [
@@ -72,7 +72,7 @@
 			"scale": [0.75, 0.75, 0.75]
 		},
 		"gui": {
-			"rotation": [25, 164, 0],
+			"rotation": [30, 225, 0],
 			"translation": [0, 2, 0],
 			"scale": [0.77, 0.77, 0.77]
 		},

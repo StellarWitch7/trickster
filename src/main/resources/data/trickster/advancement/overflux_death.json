@@ -7,12 +7,11 @@
       "text": "Final Act"
     },
     "description": {
-      "text": "Failure is not the end",
-      "obfuscated": true
+      "text": "Failure is not the end"
     },
     "frame": "task",
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
   "parent": "trickster:root",
   "criteria": {

@@ -1,12 +1,10 @@
 package dev.enjarai.trickster.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -16,14 +14,16 @@ import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
-public class SpellResonatorBlock extends Block implements SpellControlledRedstoneBlock {
+public class SpellResonatorBlock extends Block implements SpellControlledRedstoneBlock, Waterloggable {
     public static final IntProperty POWER = Properties.POWER;
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
@@ -38,7 +38,9 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     };
 
     public SpellResonatorBlock() {
-        super(Blocks.REDSTONE_BLOCK.getSettings());
+        super(AbstractBlock.Settings.copyShallow(Blocks.REDSTONE_BLOCK)
+                .luminance(state -> Math.max(1, state.get(POWER)))
+                .emissiveLighting((state, world, pos) -> true));
         setDefaultState(getStateManager().getDefaultState()
                 .with(POWER, 0)
                 .with(FACING, Direction.UP)
@@ -53,6 +55,19 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPE[state.get(FACING).getId()];
+    }
+
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (state.get(POWER) > 0) {
+            for (int i = 0; i < 2; i++) {
+                world.addParticle(
+                        new DustParticleEffect(new Vector3f(0.8f, 0, 0), 1.0F),
+                        pos.getX() + random.nextDouble(), pos.getY() + random.nextDouble(), pos.getZ() + random.nextDouble(),
+                        0.0, 0.0, 0.0
+                );
+            }
+        }
     }
 
     @Override
@@ -98,6 +113,37 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     @Override
     public boolean setPower(World world, BlockPos pos, int power) {
         var state = world.getBlockState(pos);
-        return world.setBlockState(pos, state.with(POWER, power));
+
+        if (world.setBlockState(pos, state.with(POWER, power))) {
+            world.updateNeighborsAlways(pos, this);
+            world.updateNeighborsAlways(pos.offset(state.get(FACING).getOpposite()), this);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public int getPower(World world, BlockPos pos) {
+        return world.getBlockState(pos).get(POWER);
+    }
+
+    @Override
+    protected boolean emitsRedstonePower(BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(POWER);
+    }
+
+    @Override
+    protected int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        if (direction == state.get(FACING).getOpposite()) {
+            return state.get(POWER);
+        }
+
+        return super.getStrongRedstonePower(state, world, pos, direction);
     }
 }

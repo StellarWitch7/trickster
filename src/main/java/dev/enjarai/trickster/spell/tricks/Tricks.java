@@ -72,6 +72,7 @@ public class Tricks {
     public static final CasterReflectionTrick CASTER_REFLECTION = register("caster_reflection", new CasterReflectionTrick());
     public static final CostTrick COST = register("cost", new CostTrick());
     public static final ManaReflectionTrick MANA_REFLECTION = register("mana_reflection", new ManaReflectionTrick());
+    public static final FacingReflectionTrick FACING_REFLECTION = register("facing_reflection", new FacingReflectionTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -117,6 +118,7 @@ public class Tricks {
     public static final CrossProductTrick CROSS_PRODUCT = register("cross_product", new CrossProductTrick());
     public static final NormalizeTrick NORMALIZE = register("normalize", new NormalizeTrick());
     public static final AlignVectorTrick ALIGN_VECTOR = register("align_vector", new AlignVectorTrick());
+    public static final ReverseVectorTrick REVERSE_ALIGN_VECTOR = register("reverse_align_vector", new ReverseVectorTrick());
     public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean
@@ -162,6 +164,8 @@ public class Tricks {
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
     public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
     public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
+    public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
+    public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
 
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
